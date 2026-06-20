@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}CyberScan — Administration{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="results-header">
+        <div>
+            <a href="{{ url_for('dashboard') }}" class="back-link">← Retour au tableau de bord</a>
+            <h1 class="dashboard-title">Panneau d'administration</h1>
+            <p class="dashboard-subtitle">Gestion des utilisateurs et supervision des scans</p>
+        </div>
+    </div>
+
+<!-- ── Gestion des utilisateurs ── -->
+<section class="admin-section">
+    <h2 class="section-title">
+        <span class="section-icon">👥</span>
+        Utilisateurs ({{ users|length }})
+    </h2>
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Créé le</th>
+                    <th>Dernière connexion</th>
+                    <th>Scans</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="{% if user.id == current_user.id %}row-current{% endif %}">
+                    <td class="td-id">{{ user.id }}</td>
+                    <td>
+                        <span class="user-name">{{ user.username }}</span>
+                        {% if user.id == current_user.id %}
+                        <span class="badge badge-you">vous</span>
+                        {% endif %}
+                    </td>
+                    <td class="td-email">{{ user.email }}</td>
+                    <td>
+                        <span class="badge badge-role badge-{{ user.role }}">{{ user.role }}</span>
+                    </td>
+                    <td class="td-date">{{ user.created_at.strftime('%d/%m/%Y %H:%M') if user.created_at else '—' }}</td>
+                    <td class="td-date">{{ user.last_login.strftime('%d/%m/%Y %H:%M') if user.last_login else 'Jamais' }}</td>
+                    <td class="td-count">{{ user.scans|length }}</td>
+                    <td class="td-actions">
+                        {% if user.id != current_user.id %}
+                        <!-- Changer le rôle -->
+                        <form method="POST" action="{{ url_for('change_role', user_id=user.id) }}" class="inline-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            {% if user.role == 'analyst' %}
+                            <input type="hidden" name="role" value="admin">
+                            <button type="submit" class="btn btn-sm btn-promote"
+                                    onclick="return confirm('Promouvoir {{ user.username }} en admin ?')">
+                                ↑ Admin
+                            </button>
+                            {% else %}
+                            <input type="hidden" name="role" value="analyst">
+                            <button type="submit" class="btn btn-sm btn-demote"
+                                    onclick="return confirm('Rétrograder {{ user.username }} en analyst ?')">
+                                ↓ Analyst
+                            </button>
+                            {% endif %}
+                        </form>
+                        <!-- Supprimer -->
+                        <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}" class="inline-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Supprimer définitivement {{ user.username }} ?')">
+                                🗑 Supprimer
+                            </button>
+                        </form>
+                        {% else %}
+                        <span class="td-self">—</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ── Derniers scans (tous utilisateurs) ── -->
+<section class="admin-section">
+    <h2 class="section-title">
+        <span class="section-icon">🔍</span>
+        Derniers scans — tous utilisateurs (50 derniers)
+    </h2>
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Utilisateur</th>
+                    <th>Cible</th>
+                    <th>Modules</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                    <th>Rapport</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scan in scans %}
+                <tr>
+                    <td class="td-id">{{ scan.id }}</td>
+                    <td>{{ scan.user.username if scan.user else '—' }}</td>
+                    <td class="td-target">{{ scan.target_url }}</td>
+                    <td class="td-modules">
+                        {% for mod in scan.scan_type.split(',') %}
+                        <span class="badge badge-module">{{ mod }}</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <span class="badge badge-status badge-{{ scan.status }}">{{ scan.status }}</span>
+                    </td>
+                    <td class="td-date">{{ scan.created_at.strftime('%d/%m/%Y %H:%M') if scan.created_at else '—' }}</td>
+                    <td>
+                        <a href="{{ url_for('scan_result', scan_id=scan.id) }}" class="btn btn-sm btn-view">
+                            Voir
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+</div>
+{% endblock %}

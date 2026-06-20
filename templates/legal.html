@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block title %}CyberScan — Mentions légales & RGPD{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="results-header">
+        <div>
+            <a href="{{ url_for('dashboard') }}" class="back-link">← Retour au tableau de bord</a>
+            <h1 class="dashboard-title">Mentions légales & Conformité RGPD</h1>
+            <p class="dashboard-subtitle">Cadre juridique et éthique d'utilisation de CyberScan</p>
+        </div>
+    </div>
+
+<!-- ── Avertissement principal ── -->
+<div class="legal-alert">
+    <span class="legal-alert-icon">⚠️</span>
+    <div>
+        <strong>Utilisation strictement encadrée</strong>
+        <p>CyberScan est un outil de diagnostic de sécurité réservé aux professionnels habilités. Toute utilisation sur un système sans autorisation écrite préalable du propriétaire constitue une infraction pénale.</p>
+    </div>
+</div>
+
+<!-- ── Sections ── -->
+<div class="legal-grid">
+
+    <!-- Cadre légal -->
+    <section class="legal-card">
+        <h2 class="legal-card-title">
+            <span class="legal-icon">⚖️</span>
+            Cadre légal applicable
+        </h2>
+        <p>L'utilisation de CyberScan est soumise au droit français et européen. Les principales dispositions applicables sont :</p>
+        <ul class="legal-list">
+            <li>
+                <strong>Art. 323-1 à 323-7 du Code pénal</strong> — Accès et maintien frauduleux dans un système de traitement automatisé de données (STAD). Peine encourue : jusqu'à 5 ans d'emprisonnement et 150 000 € d'amende.
+            </li>
+            <li>
+                <strong>Directive NIS 2 (UE 2022/2555)</strong> — Impose des obligations de cybersécurité aux entités essentielles et importantes opérant en Europe.
+            </li>
+            <li>
+                <strong>RGPD (Règlement UE 2016/679)</strong> — Encadre le traitement des données à caractère personnel. Tout scan susceptible d'exposer des données personnelles doit faire l'objet d'une analyse d'impact (DPIA).
+            </li>
+            <li>
+                <strong>Loi n° 78-17 (Loi Informatique et Libertés)</strong> — Transposition nationale du RGPD, applicable à tout traitement de données en France.
+            </li>
+        </ul>
+    </section>
+
+    <!-- Autorisation préalable -->
+    <section class="legal-card">
+        <h2 class="legal-card-title">
+            <span class="legal-icon">📋</span>
+            Autorisation préalable obligatoire
+        </h2>
+        <p>Conformément à l'article 323-1 du Code pénal, <strong>aucun test de sécurité ne peut être réalisé sans l'accord écrit et explicite du propriétaire du système cible</strong>.</p>
+        <p>Avant tout engagement de diagnostic, CyberScan exige :</p>
+        <ul class="legal-list">
+            <li>Un <strong>mandat de test d'intrusion</strong> signé par le représentant légal du client, définissant le périmètre exact des systèmes à tester.</li>
+            <li>La <strong>définition précise du périmètre</strong> : IP, plages réseau, URLs et services concernés.</li>
+            <li>La <strong>fenêtre temporelle autorisée</strong> pour les tests (dates, horaires).</li>
+            <li>Les <strong>contacts d'urgence</strong> côté client pour stopper le test si nécessaire.</li>
+        </ul>
+        <div class="legal-note">
+            Dans le cadre académique de ce projet, tous les tests sont réalisés sur une infrastructure isolée (VMware, réseau NAT interne) dont l'équipe CyberScan est propriétaire. Aucun système tiers n'est ciblé.
+        </div>
+    </section>
+
+    <!-- Données personnelles -->
+    <section class="legal-card">
+        <h2 class="legal-card-title">
+            <span class="legal-icon">🔒</span>
+            Traitement des données personnelles (RGPD)
+        </h2>
+        <p><strong>Responsable du traitement :</strong> CyberScan — équipe projet Sup de Vinci, Mastère Cybersécurité 2025-2026.</p>
+
+        <h3 class="legal-subtitle">Données collectées</h3>
+        <ul class="legal-list">
+            <li><strong>Données de compte :</strong> nom d'utilisateur, adresse e-mail, mot de passe hashé (bcrypt). Ces données sont nécessaires à l'authentification et ne sont jamais transmises à des tiers.</li>
+            <li><strong>Données de scan :</strong> IP/URL cible, modules utilisés, résultats de diagnostic. Ces données sont chiffrées en base (Fernet AES-128) et accessibles uniquement à l'utilisateur concerné et aux administrateurs.</li>
+            <li><strong>Journal d'audit :</strong> actions horodatées (connexion, scan, export). Conservé pour traçabilité de sécurité, accessible aux administrateurs uniquement.</li>
+        </ul>
+
+        <h3 class="legal-subtitle">Droits des utilisateurs</h3>
+        <p>Conformément au RGPD (art. 15 à 22), tout utilisateur dispose des droits suivants :</p>
+        <ul class="legal-list">
+            <li><strong>Droit d'accès</strong> — consulter ses données personnelles.</li>
+            <li><strong>Droit de rectification</strong> — corriger des données inexactes.</li>
+            <li><strong>Droit à l'effacement</strong> — demander la suppression de son compte et de ses données.</li>
+            <li><strong>Droit à la portabilité</strong> — exporter ses résultats (disponible via export CSV/PDF).</li>
+        </ul>
+        <div class="legal-note">
+            Pour exercer ces droits, contactez l'administrateur de l'instance CyberScan. Aucune donnée n'est transmise à des tiers ni utilisée à des fins commerciales.
+        </div>
+
+        <h3 class="legal-subtitle">Durée de conservation</h3>
+        <ul class="legal-list">
+            <li>Données de compte : durée de vie du projet / jusqu'à suppression par l'utilisateur.</li>
+            <li>Résultats de scan : 90 jours après la date de scan, puis suppression automatique.</li>
+            <li>Journal d'audit : 1 an (conformément aux bonnes pratiques ANSSI).</li>
+        </ul>
+    </section>
+
+    <!-- Mesures de sécurité -->
+    <section class="legal-card">
+        <h2 class="legal-card-title">
+            <span class="legal-icon">🛡️</span>
+            Mesures de sécurité implémentées
+        </h2>
+        <p>CyberScan applique les recommandations de l'ANSSI et de l'OWASP Top 10 :</p>
+        <ul class="legal-list">
+            <li><strong>Authentification sécurisée :</strong> hachage bcrypt des mots de passe, verrouillage de compte après 5 tentatives échouées (15 min).</li>
+            <li><strong>Protection CSRF :</strong> jeton CSRF sur tous les formulaires (Flask-WTF).</li>
+            <li><strong>Chiffrement des données :</strong> résultats de scan chiffrés en base avec Fernet (AES-128-CBC).</li>
+            <li><strong>Contrôle d'accès (RBAC) :</strong> séparation des rôles analyst / admin, cloisonnement des données par utilisateur.</li>
+            <li><strong>Journal d'audit :</strong> traçabilité complète de toutes les actions sensibles (connexion, scan, export, modification de rôle).</li>
+            <li><strong>Isolation réseau :</strong> environnement de test en réseau NAT VMware, isolé du réseau de production.</li>
+        </ul>
+    </section>
+
+    <!-- Charte éthique -->
+    <section class="legal-card">
+        <h2 class="legal-card-title">
+            <span class="legal-icon">🤝</span>
+            Charte éthique du testeur
+        </h2>
+        <p>Tout utilisateur de CyberScan s'engage à respecter les principes suivants :</p>
+        <ol class="legal-list legal-list--ordered">
+            <li><strong>N'utiliser CyberScan que sur des systèmes dont vous êtes propriétaire ou pour lesquels vous détenez une autorisation écrite.</strong></li>
+            <li>Ne pas utiliser les résultats des scans à des fins malveillantes, d'extorsion ou de divulgation non autorisée.</li>
+            <li>Signaler immédiatement au client toute vulnérabilité critique découverte, sans l'exploiter au-delà du périmètre convenu.</li>
+            <li>Traiter les résultats des diagnostics comme des données confidentielles et les protéger en conséquence.</li>
+            <li>Respecter la fenêtre temporelle et le périmètre définis dans le mandat de test.</li>
+            <li>Documenter toutes les actions effectuées pour permettre une auditabilité complète.</li>
+        </ol>
+        <div class="legal-note legal-note--warning">
+            Toute violation de cette charte engage la responsabilité pénale et civile de l'utilisateur. CyberScan décline toute responsabilité en cas d'utilisation non conforme de l'outil.
+        </div>
+    </section>
+
+</div>
+
+</div>
+{% endblock %}

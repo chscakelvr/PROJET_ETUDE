@@ -1,0 +1,14 @@
+# Secrets - NE JAMAIS PUSH
+.env
+*.db
+instance/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db

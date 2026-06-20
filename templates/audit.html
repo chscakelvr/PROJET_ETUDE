@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}CyberScan — Journal d'audit{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="results-header">
+        <div>
+            <a href="{{ url_for('dashboard') }}" class="back-link">← Retour au tableau de bord</a>
+            <h1 class="dashboard-title">Journal d'audit</h1>
+            <p class="dashboard-subtitle">200 dernières entrées — accès administrateur uniquement</p>
+        </div>
+    </div>
+
+    <div class="result-module">
+        <div style="overflow-x: auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                <thead>
+                    <tr style="background:var(--color-primary, #1E3A5F); color:#fff; text-align:left;">
+                        <th style="padding:10px 12px;">Horodatage</th>
+                        <th style="padding:10px 12px;">Utilisateur</th>
+                        <th style="padding:10px 12px;">Action</th>
+                        <th style="padding:10px 12px;">Cible</th>
+                        <th style="padding:10px 12px;">Détail</th>
+                        <th style="padding:10px 12px;">IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr style="border-bottom:1px solid #e5e7eb; {% if loop.index is odd %}background:#f9fafb;{% endif %}">
+                        <td style="padding:8px 12px; white-space:nowrap;">{{ log.timestamp.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                        <td style="padding:8px 12px;">{{ log.username or '—' }}</td>
+                        <td style="padding:8px 12px;">
+                            <span style="
+                                padding:2px 8px; border-radius:4px; font-weight:600; font-size:0.78rem;
+                                {% if log.action == 'SCAN_LAUNCH' %}background:#dbeafe;color:#1d4ed8;
+                                {% elif log.action == 'LOGIN' %}background:#dcfce7;color:#15803d;
+                                {% elif log.action == 'LOGOUT' %}background:#f3f4f6;color:#6b7280;
+                                {% elif 'EXPORT' in log.action %}background:#fef9c3;color:#92400e;
+                                {% else %}background:#f3f4f6;color:#374151;{% endif %}
+                            ">{{ log.action }}</span>
+                        </td>
+                        <td style="padding:8px 12px; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ log.target or '—' }}</td>
+                        <td style="padding:8px 12px; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ log.detail or '—' }}</td>
+                        <td style="padding:8px 12px; font-family:monospace;">{{ log.ip_address or '—' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="padding:20px; text-align:center; color:#6b7280;">Aucune entrée dans le journal.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}CyberScan — Résultats{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="results-header">
+        <div>
+            <a href="{{ url_for('dashboard') }}" class="back-link">← Retour au tableau de bord</a>
+            <h1 class="dashboard-title">Résultats du diagnostic</h1>
+            <p class="dashboard-subtitle">
+                Cible : <strong>{{ scan.target_url }}</strong>
+                — {{ scan.created_at.strftime('%d/%m/%Y à %H:%M') }}
+            </p>
+            <a href="{{ url_for('download_report', scan_id=scan.id) }}" class="btn btn-download">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Télécharger le rapport PDF
+            </a>
+            <a href="{{ url_for('download_csv', scan_id=scan.id) }}" class="btn btn-download" style="margin-left:8px; background:#10B981;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Exporter en CSV
+            </a>
+        </div>
+        <div class="results-summary">
+            {% set ns = namespace(critical=0, high=0, medium=0, low=0) %}
+            {% for mod_key, mod_data in results.get('modules', {}).items() %}
+                {% for f in mod_data.get('findings', []) %}
+                    {% if f.severity == 'critical' %}{% set ns.critical = ns.critical + 1 %}
+                    {% elif f.severity == 'high' %}{% set ns.high = ns.high + 1 %}
+                    {% elif f.severity == 'medium' %}{% set ns.medium = ns.medium + 1 %}
+                    {% elif f.severity == 'low' %}{% set ns.low = ns.low + 1 %}{% endif %}
+                {% endfor %}
+            {% endfor %}
+            <div class="stat-card stat-critical">
+                <span class="stat-number">{{ ns.critical }}</span>
+                <span class="stat-label">Critiques</span>
+            </div>
+            <div class="stat-card stat-high">
+                <span class="stat-number">{{ ns.high }}</span>
+                <span class="stat-label">Élevées</span>
+            </div>
+            <div class="stat-card stat-medium">
+                <span class="stat-number">{{ ns.medium }}</span>
+                <span class="stat-label">Moyennes</span>
+            </div>
+            <div class="stat-card stat-low">
+                <span class="stat-number">{{ ns.low }}</span>
+                <span class="stat-label">Faibles</span>
+            </div>
+        </div>
+    </div>
+
+    {% for mod_key, mod_data in results.get('modules', {}).items() %}
+    <div class="result-module">
+        <h2 class="module-result-title">{{ mod_data.name }}</h2>
+        <div class="findings-list">
+            {% for finding in mod_data.get('findings', []) %}
+            <div class="finding-card finding-{{ finding.severity }}">
+                <div class="finding-severity">
+                    <span class="severity-badge severity-{{ finding.severity }}">{{ finding.severity | upper }}</span>
+                </div>
+                <div class="finding-content">
+                    <h4 class="finding-title">{{ finding.title }}</h4>
+                    <p class="finding-detail">{{ finding.detail }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

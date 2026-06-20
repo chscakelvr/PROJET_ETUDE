@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}CyberScan — Analyse forensique{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="results-header">
+        <div>
+            <a href="{{ url_for('dashboard') }}" class="back-link">← Retour au tableau de bord</a>
+            <h1 class="dashboard-title">Analyse forensique</h1>
+            <p class="dashboard-subtitle">Calcul de hash MD5/SHA256 + vérification automatique sur VirusTotal</p>
+        </div>
+    </div>
+
+    <div class="result-module">
+
+        <!-- Info VirusTotal -->
+        <div class="vt-info-box">
+            <div class="vt-info-icon">🔬</div>
+            <div class="vt-info-content">
+                <strong>Intégration VirusTotal</strong>
+                <p>
+                    Le fichier uploadé est analysé localement (hash MD5 + SHA256), puis le hash est soumis
+                    à l'API VirusTotal pour vérification auprès de +70 moteurs antivirus.
+                    Une clé API gratuite est disponible sur
+                    <a href="https://www.virustotal.com" target="_blank" class="vt-link">virustotal.com</a>
+                    (compte gratuit → API key dans votre profil).
+                </p>
+                {% if vt_configured %}
+                <span class="vt-status vt-status--ok">✓ Clé API configurée</span>
+                {% else %}
+                <span class="vt-status vt-status--warn">⚠ Clé API manquante — ajoutez VIRUSTOTAL_API_KEY dans .env</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="forensic-form">
+            {{ form.hidden_tag() }}
+
+            <div class="forensic-fields">
+                <!-- Upload fichier -->
+                <div class="forensic-field">
+                    <label class="form-label">Fichier à analyser</label>
+                    <input type="file" name="file" required class="file-input">
+                    <p class="form-hint">Taille maximale : 10 Mo. Le fichier n'est jamais stocké sur le serveur.</p>
+                </div>
+
+                <!-- Clé API optionnelle (override .env) -->
+                <div class="forensic-field">
+                    <label class="form-label">
+                        Clé API VirusTotal
+                        <span class="label-optional">(optionnel — remplace la clé .env)</span>
+                    </label>
+                    <input type="text" name="vt_api_key_override"
+                           class="form-input"
+                           placeholder="Votre clé API VirusTotal (ex: abc123...)"
+                           style="font-family: monospace; font-size: 0.82rem;">
+                    <p class="form-hint">
+                        Obtenez une clé gratuite sur
+                        <a href="https://www.virustotal.com" target="_blank" class="vt-link">virustotal.com</a>
+                        → Mon profil → Clé API.
+                    </p>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-scan" style="margin-top: 1rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Analyser le fichier
+            </button>
+        </form>
+
+        {% if results %}
+        <div style="margin-top: 2rem;">
+            <h2 class="module-result-title">Résultats de l'analyse</h2>
+            <div class="findings-list">
+                {% for finding in results.get('findings', []) %}
+                <div class="finding-card finding-{{ finding.severity }}">
+                    <div class="finding-severity">
+                        <span class="severity-badge severity-{{ finding.severity }}">{{ finding.severity | upper }}</span>
+                    </div>
+                    <div class="finding-content">
+                        <h4 class="finding-title">{{ finding.title }}</h4>
+                        <p class="finding-detail">{{ finding.detail }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

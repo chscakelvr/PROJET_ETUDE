@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CyberScan{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="nav-logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="CyberScan Logo" style="width:28px; height:28px; object-fit:contain; vertical-align:middle;">
+            </span>
+            <span class="nav-title">CYBERSCAN</span>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                Tableau de bord
+            </a>
+            <a href="{{ url_for('forensic') }}" class="nav-link {% if request.endpoint == 'forensic' %}active{% endif %}">
+                Forensique
+            </a>
+            {% if current_user.role == 'admin' %}
+            <a href="{{ url_for('audit_log') }}" class="nav-link {% if request.endpoint == 'audit_log' %}active{% endif %}">
+                Journal d'audit
+            </a>
+            <a href="{{ url_for('admin_panel') }}" class="nav-link {% if request.endpoint == 'admin_panel' %}active{% endif %}">
+                Administration
+            </a>
+            {% endif %}
+            <div class="nav-user">
+                <span class="nav-username">{{ current_user.username }}</span>
+                <span class="nav-role nav-role--{{ current_user.role }}">{{ current_user.role }}</span>
+                <a href="{{ url_for('logout') }}" class="nav-link nav-logout">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
+            <span>{{ message }}</span>
+            <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>CyberScan © 2026 — Détecter aujourd'hui. Protéger demain. &nbsp;|&nbsp;
+        <a href="{{ url_for('legal') }}" style="color: inherit; opacity:0.6; text-decoration:underline;">Mentions légales & RGPD</a></p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
