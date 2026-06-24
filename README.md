@@ -127,9 +127,9 @@ Les outils intégrés à CyberScan (Nmap, SQLmap, Hydra, John the Ripper) ne peu
 
 ## Équipe projet
 
-- **Asmaa BAHAMMOU** — Architecte & développeuse back-end
-- **Astan DIANKA** — Analyste sécurité, QA & forensique
-- **Solène BERNABE** — Développeuse Front-end & Reporting
+- **Asmaa BAHAMMOU**
+- **Astan DIANKA**
+- **Solène BERNABE**
 
 ## Licence
 
