@@ -1,6 +1,8 @@
 """
-Point d'entree WSGI pour AlwaysData.
-AlwaysData cherche une variable 'application' dans ce fichier.
+Point d'entree WSGI pour CyberScan.
+
+Ce fichier expose la variable 'application' utilisee par les serveurs WSGI
+(Gunicorn, uWSGI, mod_wsgi...) pour servir l'application Flask en production.
 """
 import sys
 import os
