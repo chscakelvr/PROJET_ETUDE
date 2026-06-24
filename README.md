@@ -6,7 +6,7 @@ CyberScan est une toolbox web de diagnostic de vulnérabilités développée dan
 
 L'application permet à un analyste pentest de lancer en quelques clics un ensemble de diagnostics automatisés (réseau, web, infrastructure, pentest interne, forensique) sur une cible donnée, puis de générer un rapport professionnel au format PDF ou CSV.
 
-## Structure du projet
+Structure du projet
 cyberscan/
 ├── app.py                  # Application Flask principale
 ├── config.py               # Configuration
