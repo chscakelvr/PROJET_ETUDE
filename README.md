@@ -86,22 +86,6 @@ flask run --host=0.0.0.0 --port=5000
 
 Accédez à `http://127.0.0.1:5000` (ou `http://IP_DU_SERVEUR:5000` depuis une autre machine du réseau).
 
-### Sur Windows
-
-```powershell
-git clone https://github.com/chscakelvr/PROJET_ETUDE.git
-cd PROJET_ETUDE
-
-python -m venv venv
-venv\Scripts\activate
-
-pip install -r requirements.txt
-
-copy .env.example .env
-# Configurer .env (cf. instructions ci-dessus)
-
-python app.py
-```
 
 ## Compte par défaut
 
@@ -116,7 +100,6 @@ Il est fortement recommandé de modifier ce mot de passe après la première con
 Pour expérimenter la toolbox dans des conditions réalistes, nous recommandons un environnement VMware isolé comprenant :
 
 - Une **VM Kali Linux** hébergeant l'application et les outils d'audit
-- Une **VM Windows 10** simulant le poste analyste
 - Une **VM Metasploitable 2** servant de cible volontairement vulnérable
 
 L'ensemble communique sur un réseau virtuel interne (NAT) isolé, conformément aux recommandations de l'ANSSI pour les environnements de test.
