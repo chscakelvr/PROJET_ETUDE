@@ -93,7 +93,6 @@ Accédez à `http://127.0.0.1:5000` (ou `http://IP_DU_SERVEUR:5000` depuis une a
 |-------------|--------------|
 | admin       | Admin@2025!  |
 
-Il est fortement recommandé de modifier ce mot de passe après la première connexion.
 
 ## Environnement de test recommandé
 
