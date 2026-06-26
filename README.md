@@ -6,6 +6,11 @@
 
 CyberScan est une toolbox web de diagnostic de vulnérabilités développée dans le cadre du projet d'études Mastère 1 Cybersécurité — Sup de Vinci (2025-2026).
 
+L'équipe projet est composé de :
+- Asmaa BAHAMMOU
+- Astan DIANKA
+- Solène BERNABE
+
 L'application permet à un analyste pentest de lancer en quelques clics un ensemble de diagnostics automatisés (réseau, web, infrastructure, pentest interne, forensique) sur une cible donnée, puis de générer un rapport professionnel au format PDF ou CSV.
 
 ## Structure du projet
@@ -107,12 +112,5 @@ L'ensemble communique sur un réseau virtuel interne (NAT) isolé, conformément
 
 Les outils intégrés à CyberScan (Nmap, SQLmap, Hydra, John the Ripper) ne peuvent être utilisés que sur des systèmes pour lesquels une autorisation écrite préalable a été obtenue, conformément aux articles 323-1 à 323-7 du Code pénal français. L'application intègre nativement une page de mentions légales et reproduit le consentement client sur chaque rapport généré.
 
-## Équipe projet
 
-- **Asmaa BAHAMMOU**
-- **Astan DIANKA**
-- **Solène BERNABE**
 
-## Licence
-
-Projet académique réalisé dans le cadre du Mastère 1 Cybersécurité de Sup de Vinci.
